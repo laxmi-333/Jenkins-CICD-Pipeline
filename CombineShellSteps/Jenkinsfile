@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 cleanWs()
-                echo 'Building a new laptop ...'
+                echo 'Building a new laptop with features ...!!!'
                 sh '''
                     mkdir -p build
                     touch build/computer.txt
