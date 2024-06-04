@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    environment {
+        BUILD_FILE_NAME = 'laptop.txt'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                cleanWs()
+                echo 'Building a new laptop ...'
+                sh '''
+                    echo laptop.txt
+                    mkdir -p build
+                    echo "Mainboard" >> build/laptop.txt
+                    cat build/laptop.txt
+                    echo "Display" >> build/laptop.txt
+                    cat build/laptop.txt
+                    echo "Keyboard" >> build/laptop.txt
+                    cat build/laptop.txt
+                '''
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing the new laptop ...'
+                sh '''
+                    test -f build/laptop.txt
+                    grep "Mainboard" build/laptop.txt
+                    grep "Display" build/laptop.txt
+                    grep "Keyboard" build/laptop.txt
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            archiveArtifacts artifacts: 'build/**'
+        }
+    }
+}
